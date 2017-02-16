@@ -36,7 +36,7 @@ public class TransaqConnector {
 	}
 	
 	public void initialize() {
-		CommandManager = (TransaqDll)Native.loadLibrary("d:\\workspace\\trading\\datp\\txmlconnector64.dll", TransaqDll.class);
+		CommandManager = (TransaqDll)Native.loadLibrary("d:\\GitHub\\trading\\datp\\txmlconnector64.dll", TransaqDll.class);
 		DataManager = new TransaqDataManager();
 		
 		CommandManager.Initialize("d:\\transaq.log", 2);
