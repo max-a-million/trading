@@ -9,7 +9,7 @@ import java.rmi.*;
 public class RemoteDataPathApiAdapter implements NetworkDataPath {
 	
 	private String Uri;
-	private RemoteDataConsumer DataPath;
+	private RemoteDataProducer DataPath;
 	
 	public RemoteDataPathApiAdapter() throws RemoteException {
 	}
@@ -17,7 +17,7 @@ public class RemoteDataPathApiAdapter implements NetworkDataPath {
 	public void initialize(String uri) throws RemoteException {
 		Uri = uri;
 		try {
-			DataPath = (RemoteDataConsumer)Naming.lookup(Uri);
+			DataPath = (RemoteDataProducer)Naming.lookup(Uri);
 		} catch (NotBoundException | MalformedURLException | RemoteException e) {
 			Logs.message("Remoting -> Data Path", "initialize", Uri, "error");
 		}
@@ -32,7 +32,7 @@ public class RemoteDataPathApiAdapter implements NetworkDataPath {
 		}
 	}
 	
-	public class RemoteDataConsumer implements RemoteDataPathApi {
+	public class RemoteDataProducer implements RemoteDataPathApi {
 	
 		public void ServerStatus(String path) throws RemoteException {
 			Logs.message("Remote CM", "deinitialize", "ok");

@@ -15,6 +15,24 @@ public class Main {
 		
 		Logs.initialize("datp");
 		
+		for (int idx = 0; idx < args.length; idx ++) {
+			
+			switch (args[idx]) {
+			
+			case "--login":
+				if (args.length >= idx + 2) {
+					Config.Finam.UserName = args[idx + 1];
+					Logs.message("datp", "user name", Config.Finam.UserName);
+				}
+				break;
+			
+			case "--password":
+				if (args.length >= idx + 2)
+					Config.Finam.UserPassword = args[idx + 1];
+				break;
+			}
+		}
+		
 		datp.broker.Broker.FinamTC(Stage.START);
 		
 		Scanner reader = new Scanner(System.in);

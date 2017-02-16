@@ -10,5 +10,8 @@ public class Config {
 		public static final String RemoteCommandPort 	= "7283";
 		public static final String RemoteAlgoDataPort 	= "7284";
 		public static final String RemoteProxyDataPort 	= "7285";
+		
+		public static String UserName;
+		public static String UserPassword;
 	}
 }
