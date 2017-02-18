@@ -35,6 +35,7 @@ public class RemoteDataPathAdapter implements NetworkDataPath {
 	public void destroy() {
 		try {
 			Naming.unbind(Uri);
+			UnicastRemoteObject.unexportObject(DataPath, true);
 		} catch (RemoteException | MalformedURLException | NotBoundException e) {
 			e.printStackTrace();
 		}

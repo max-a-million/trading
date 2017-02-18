@@ -35,6 +35,7 @@ public class RemoteCommandPathApiAdapter implements NetworkCommandPath {
 	
 	public void deinitialize() throws RemoteException, MalformedURLException, NotBoundException {
 		Naming.unbind(Uri);
+		UnicastRemoteObject.unexportObject(CommandPath, true);
 		Logs.message("Remote CM", "deinitialize", "ok");
 	}
 	
