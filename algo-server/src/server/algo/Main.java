@@ -1,41 +1,80 @@
 package server.algo;
 
-import com.sun.jna.Native;
-import com.sun.jna.platform.win32.*;
-import com.sun.jna.platform.win32.Tlhelp32.MODULEENTRY32W;
-import com.sun.jna.platform.win32.Tlhelp32.PROCESSENTRY32;
-import com.sun.jna.platform.win32.WinNT.HANDLE;
+import datp.Config;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.Scanner;
 
 public class Main {
 
-	public static void main(String[] args) throws InterruptedException {
-		
-		Kernel32 win32 = Kernel32.INSTANCE;
-		
-		PROCESSENTRY32 pe32 = new PROCESSENTRY32();
-		HANDLE proc = win32.CreateToolhelp32Snapshot(Tlhelp32.TH32CS_SNAPPROCESS, new WinDef.DWORD(0));
-		win32.Process32First(proc, pe32);
-		do {
-			String exeFile = Native.toString(pe32.szExeFile);
-			//System.out.println(Native.toString(pe32.szExeFile));
-			if (exeFile.startsWith("algo-server")) {
-				System.out.println(Native.toString(pe32.szExeFile));
-				return;
-				/*MODULEENTRY32W mo32 = new MODULEENTRY32W();
-				HANDLE mod = win32.CreateToolhelp32Snapshot(Tlhelp32.TH32CS_SNAPMODULE, pe32.th32ProcessID);
-				win32.Module32FirstW(mod, mo32);
-				do {
-					System.out.println(Native.toString(mo32.szModule));
-				} while (win32.Module32NextW(mod, mo32));*/
-			}
-			
-		} while(win32.Process32Next(proc, pe32));
-		
-		while (true) {
-			System.out.println("waiting... " + pe32.th32ProcessID);
-			Thread.sleep(1500);
+	private static Main.CmdsApi Cmds;
+	
+	private static void checkAdditionalOptions(String[] args) {
+		System.out.println("additional options");
+		try {
+			Cmds = (Main.CmdsApi)Naming.lookup(Config.AlgoServerCmdsUri);
+			Cmds.addOptions(args);
+		} catch (NotBoundException | MalformedURLException | RemoteException e) {
 		}
-
+	}
+	
+	public static void main(String[] args) {
+		
+		File lockFile = new File(Config.AlgoServerLockFileName);
+		if (lockFile.exists()) {
+			checkAdditionalOptions(args);
+			return;
+		}
+			
+		try {
+			lockFile.createNewFile();
+			LocateRegistry.createRegistry(Integer.parseInt(Config.AlgoServerCmdsPort));
+			Cmds = new Main.AlgoServerCommans();
+			Naming.rebind(Config.AlgoServerCmdsUri, Cmds);
+			System.out.println("Cmds created");
+		} catch (IOException e) {
+			System.out.println("can't create new file...");
+			return;
+		}
+		
+		@SuppressWarnings("resource")
+		Scanner reader = new Scanner(System.in);
+		String input = reader.nextLine();
+		while (!input.equals("exit")) {
+			input = reader.nextLine();
+		}
+		reader.close();
+		
+		lockFile.delete();
+		try {
+			Naming.unbind(Config.AlgoServerCmdsUri);
+			UnicastRemoteObject.unexportObject(Cmds, true);
+			System.out.println("Cmds unbinded");
+		} catch (IOException | NotBoundException e) {
+			System.out.println("can't create new file...");
+			return;
+		}
 	}
 
+	public static class AlgoServerCommans extends UnicastRemoteObject implements CmdsApi {
+
+		protected AlgoServerCommans() throws RemoteException {
+		}
+		
+		public void addOptions(String[] args) throws RemoteException {
+			for (String arg : args) System.out.println(arg);
+		}
+	}
+	
+	public static interface CmdsApi extends Remote {
+		public void addOptions(String[] args) throws RemoteException;
+	}
 }
