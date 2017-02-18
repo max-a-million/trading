@@ -15,37 +15,78 @@ import java.util.Scanner;
 
 public class Main {
 
+	private static File LockFile;
 	private static Main.CmdsApi Cmds;
 	
-	private static void checkAdditionalOptions(String[] args) {
+	private static void applyOptions(String[] args) {
+		
+	}
+	
+	private static void applyNewOptions(String[] args) {
+		try {
+			Cmds.addOptions(args);
+		} catch (RemoteException e) {
+		}
+	}
+	
+	private static void createCmdManager() {
+		try {
+			LocateRegistry.createRegistry(Integer.parseInt(Config.AlgoServerCmdsPort));
+			Cmds = new Main.AlgoServerCommans();
+			Naming.rebind(Config.AlgoServerCmdsUri, Cmds);
+		} catch (IOException e) {
+		}
+	}
+	
+	private static void bindToCmdManager() {
 		System.out.println("additional options");
 		try {
 			Cmds = (Main.CmdsApi)Naming.lookup(Config.AlgoServerCmdsUri);
-			Cmds.addOptions(args);
 		} catch (NotBoundException | MalformedURLException | RemoteException e) {
 		}
 	}
 	
+	private static void unbindFromCmdManager() {
+		try {
+			Naming.unbind(Config.AlgoServerCmdsUri);
+			UnicastRemoteObject.unexportObject(Cmds, true);
+		} catch (IOException | NotBoundException e) {
+		}
+	}
+	
+	private static void prepareLaunch() {
+		try {
+			LockFile = new File(Config.AlgoServerLockFileName);
+			LockFile.createNewFile();
+		} catch (IOException e) {
+		}
+	}
+	
+	private static boolean isRelaunch() {
+		LockFile = new File(Config.AlgoServerLockFileName);
+		return LockFile.exists();
+	}
+	
+	private static void finishLaunch() {
+		LockFile.delete();
+	}
+	
 	public static void main(String[] args) {
 		
-		File lockFile = new File(Config.AlgoServerLockFileName);
-		if (lockFile.exists()) {
-			checkAdditionalOptions(args);
+		if (isRelaunch()) {
+			bindToCmdManager();
+			applyNewOptions(args);
 			return;
-		}
-			
-		try {
-			lockFile.createNewFile();
-			LocateRegistry.createRegistry(Integer.parseInt(Config.AlgoServerCmdsPort));
-			Cmds = new Main.AlgoServerCommans();
-			Naming.rebind(Config.AlgoServerCmdsUri, Cmds);
-			System.out.println("Cmds created");
-		} catch (IOException e) {
-			System.out.println("can't create new file...");
-			return;
-		}
+		} 
 		
-		@SuppressWarnings("resource")
+		prepareLaunch();
+		createCmdManager();
+		applyOptions(args);
+		
+		TradingBrain tradingBrain = new TradingBrain();
+		tradingBrain.prepare();
+		tradingBrain.start();
+		
 		Scanner reader = new Scanner(System.in);
 		String input = reader.nextLine();
 		while (!input.equals("exit")) {
@@ -53,15 +94,12 @@ public class Main {
 		}
 		reader.close();
 		
-		lockFile.delete();
-		try {
-			Naming.unbind(Config.AlgoServerCmdsUri);
-			UnicastRemoteObject.unexportObject(Cmds, true);
-			System.out.println("Cmds unbinded");
-		} catch (IOException | NotBoundException e) {
-			System.out.println("can't create new file...");
-			return;
-		}
+		tradingBrain.exit();
+		tradingBrain.interrupt();
+		Thread.yield();
+		
+		finishLaunch();
+		unbindFromCmdManager();
 	}
 
 	public static class AlgoServerCommans extends UnicastRemoteObject implements CmdsApi {
