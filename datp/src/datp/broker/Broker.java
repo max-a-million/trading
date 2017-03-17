@@ -12,34 +12,49 @@ public class Broker {
 	
 	public static void FinamTC(Stage stage) {
 		
-		try {
-			BrokerConnectorProxy connector = BrokerConnectorFactory.getConnector("finam-transaq");
-			NetworkCommandPath commander = NetworkCommandFactory.getCommander("Remote", Config.Finam.RemoteCommandPath);
-			NetworkDataPath algoDataPath = NetworkDataFactory.getDataPath("Remote", Config.Finam.RemoteAlgoDataPath);
-			NetworkDataPath proxyDataPath = NetworkDataFactory.getDataPath("Remote", Config.Finam.RemoteProxyDataPath);
+		BrokerConnectorProxy connector = BrokerConnectorProxyFactory.getConnector("finam-tc");
+		NetworkCommandPathAdapter commander = NetworkCommandFactory.getCommander("Remote", Config.FinamTC.RemoteCommandPath);
+		NetworkDataPathAdapter algoData = NetworkDataFactory.getDataPath("Remote", Config.FinamTC.RemoteAlgoDataPath);
+		NetworkDataPathAdapter proxyData = NetworkDataFactory.getDataPath("Remote", Config.FinamTC.RemoteProxyDataPath);
 			
-			switch (stage) {
+		switch (stage) {
 			
-			case START: 
-				((RemoteCommandPathApiAdapter)commander).initialize(connector, Config.Finam.RemoteCommandPath, Config.Finam.RemoteCommandPort);
-				((RemoteDataPathApiAdapter)algoDataPath).initialize(Config.Finam.RemoteAlgoDataPath);
-				((RemoteDataPathApiAdapter)proxyDataPath).initialize(Config.Finam.RemoteProxyDataPath);
-				connector.setDataPaths(algoDataPath, proxyDataPath);
-				connector.connect();
-				break;
+		case START: 
+			commander.initialize(connector.getCommandBridge(), Config.FinamTC.RemoteCommandPath, Config.FinamTC.RemoteCommandPort);
+			algoData.initialize(Config.FinamHistory.RemoteAlgoDataPath);
+			proxyData.initialize(Config.FinamHistory.RemoteProxyDataPath);
+			connector.setDataPaths(algoData.getDataBridge(), proxyData.getDataBridge());
+			connector.connect();
+			break;
 			
-			case STOP:
-				connector.disconnect();
-				((RemoteCommandPathApiAdapter)commander).deinitialize();
-				break;
-			}
-		
-		} catch (RemoteException | MalformedURLException | NotBoundException e) {
-			e.printStackTrace(System.out);
+		case STOP:
+			connector.disconnect();
+			commander.deinitialize();
+			break;
 		}
 	}
 	
-	public static void FinamHistorical() {
+	public static void FinamHistorical(Stage stage) {
 		
+		BrokerConnectorProxy connector = BrokerConnectorProxyFactory.getConnector("finam-historical");
+		NetworkCommandPathAdapter commander = NetworkCommandFactory.getCommander("Remote", Config.FinamHistory.RemoteCommandPath);
+		NetworkDataPathAdapter algoData = NetworkDataFactory.getDataPath("Remote", Config.FinamHistory.RemoteAlgoDataPath);
+		NetworkDataPathAdapter proxyData = NetworkDataFactory.getDataPath("Remote", Config.FinamHistory.RemoteProxyDataPath);
+			
+		switch (stage) {
+			
+		case START: 
+			commander.initialize(connector.getCommandBridge(), Config.FinamHistory.RemoteCommandPath, Config.FinamHistory.RemoteCommandPort);
+			algoData.initialize(Config.FinamHistory.RemoteAlgoDataPath);
+			proxyData.initialize(Config.FinamHistory.RemoteProxyDataPath);
+			connector.setDataPaths(algoData.getDataBridge(), proxyData.getDataBridge());
+			connector.connect();
+			break;
+			
+		case STOP:
+			connector.disconnect();
+			commander.deinitialize();
+			break;
+		}
 	}
 }

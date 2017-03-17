@@ -1,0 +1,24 @@
+package algo.analyst;
+
+import algo.AnalystCommandPathAdapter;
+import algo.AnalystDataPathAdapter;
+import datp.Config;
+
+public class AnalystBrain extends Thread {
+	
+	public static AnalystDataPathAdapter ConnectorDataPath;
+	public static AnalystCommandPathAdapter ConnectorCommandPath;
+	
+	public static void bindToConnector() {
+		ConnectorDataPath = new AnalystDataPathAdapter(Config.FinamHistory.RemoteAlgoDataPath, Config.FinamHistory.RemoteAlgoDataPort);
+		ConnectorCommandPath = new AnalystCommandPathAdapter(Config.FinamHistory.RemoteCommandPath);
+	}
+	
+	public void run() {
+
+		while (!Thread.currentThread().isInterrupted()) {
+			
+		}
+	}
+	
+}

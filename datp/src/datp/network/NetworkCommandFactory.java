@@ -7,15 +7,18 @@ import java.rmi.RemoteException;
 
 public class NetworkCommandFactory {
 	
-	private static Map<String, NetworkCommandPath> CommandStorage;
+	private static Map<String, NetworkCommandPathAdapter> CommandStorage;
 	
 	static {
-		CommandStorage = new HashMap<String, NetworkCommandPath>();
+		CommandStorage = new HashMap<String, NetworkCommandPathAdapter>();
 	}
 	
-	public static NetworkCommandPath getCommander(String type, String id) throws RemoteException {
-		NetworkCommandPath commander = null;
+	public static NetworkCommandPathAdapter getCommander(String type, String id) {
+		
+		NetworkCommandPathAdapter commander = null;
+		
 		switch (type) {
+		
 		case "Remote":
 			commander = CommandStorage.get(id);
 			if (commander == null) {
@@ -24,6 +27,7 @@ public class NetworkCommandFactory {
 			}
 			break;
 		}
+		
 		return commander;
 	}
 }

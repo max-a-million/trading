@@ -1,0 +1,25 @@
+package algo.analyst;
+
+import algo.AnalystDataPathAdapter;
+import datp.Config;
+import algo.AnalystCommandPathAdapter;
+
+public class Main {
+
+	public static AnalystDataPathAdapter ConnectorDataPath;
+	public static AnalystCommandPathAdapter ConnectorCommandPath;
+	
+	static {
+		ConnectorDataPath = new AnalystDataPathAdapter(Config.FinamHistory.RemoteAlgoDataPath, Config.FinamHistory.RemoteAlgoDataPort);
+		ConnectorCommandPath = new AnalystCommandPathAdapter(Config.FinamHistory.RemoteCommandPath);
+	}
+	
+	public void bindToConnector() {
+		
+	}
+	
+	public static void main(String[] args) {
+
+	}
+
+}

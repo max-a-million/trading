@@ -19,21 +19,22 @@ public class Main {
 			
 			switch (args[idx]) {
 			
-			case "--login":
+			case "--finam-tc-login":
 				if (args.length >= idx + 2) {
-					Config.Finam.UserName = args[idx + 1];
-					Logs.message("datp", "user name", Config.Finam.UserName);
+					Config.FinamTC.UserName = args[idx + 1];
+					Logs.message("datp", "user name", Config.FinamTC.UserName);
 				}
 				break;
 			
-			case "--password":
+			case "--finam-tc-password":
 				if (args.length >= idx + 2)
-					Config.Finam.UserPassword = args[idx + 1];
+					Config.FinamTC.UserPassword = args[idx + 1];
 				break;
 			}
 		}
 		
-		datp.broker.Broker.FinamTC(Stage.START);
+		//datp.broker.Broker.FinamTC(Stage.START);
+		datp.broker.Broker.FinamHistorical(Stage.START);
 		
 		Scanner reader = new Scanner(System.in);
 		String input = reader.nextLine();
@@ -45,7 +46,8 @@ public class Main {
 			}
 		}
 		
-		datp.broker.Broker.FinamTC(Stage.STOP);
+		//datp.broker.Broker.FinamTC(Stage.STOP);
+		datp.broker.Broker.FinamHistorical(Stage.STOP);
 		
 		Thread.yield();
 		

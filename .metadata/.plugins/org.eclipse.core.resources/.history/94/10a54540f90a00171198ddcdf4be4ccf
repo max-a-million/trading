@@ -1,0 +1,14 @@
+package algo;
+
+public class AnalystDataPath extends RemoteDataPathAdapter {
+
+	public AnalystDataPath(String uri, String port) {
+		super(uri, port);
+	}
+
+	@Override
+	public void ServerStatus() {
+		
+	}
+	
+}

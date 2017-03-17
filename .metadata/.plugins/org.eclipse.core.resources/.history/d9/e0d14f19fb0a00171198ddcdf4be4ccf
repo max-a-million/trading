@@ -1,0 +1,39 @@
+package algo.analyst;
+
+import datp.Config;
+import algo.AnalystDataPathAdapter;
+import algo.server.TradingBrain;
+
+import java.util.Scanner;
+
+import algo.AnalystCommandPathAdapter;
+
+public class Main {
+
+	public static AnalystDataPathAdapter ConnectorDataPath;
+	public static AnalystCommandPathAdapter ConnectorCommandPath;
+	
+	public static void bindToConnector() {
+		ConnectorDataPath = new AnalystDataPathAdapter(Config.FinamHistory.RemoteAlgoDataPath, Config.FinamHistory.RemoteAlgoDataPort);
+		ConnectorCommandPath = new AnalystCommandPathAdapter(Config.FinamHistory.RemoteCommandPath);
+	}
+	
+	public static void main(String[] args) {
+		
+		bindToConnector();
+		
+		AnalystBrain tradingBrain = new AnalystBrain();
+		tradingBrain.start();
+		
+		Scanner reader = new Scanner(System.in);
+		String input = reader.nextLine();
+		while (!input.equals("exit")) {
+			input = reader.nextLine();
+		}
+		reader.close();
+		
+		tradingBrain.interrupt();
+		Thread.yield();
+	}
+
+}

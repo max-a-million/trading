@@ -1,0 +1,9 @@
+package algo.analyst;
+
+public class AnalystBrain extends Thread {
+	
+	public void run() {
+		
+	}
+	
+}

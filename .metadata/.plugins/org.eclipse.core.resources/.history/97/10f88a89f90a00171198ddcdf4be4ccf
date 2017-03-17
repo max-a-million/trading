@@ -1,0 +1,14 @@
+package algo.analyst;
+
+import algo.AnalystDataPathAdapter;
+import algo.AnalystCommandPathAdapter;
+
+public class Main {
+
+	public static AnalystDataPathAdapter DataPath;
+	
+	public static void main(String[] args) {
+
+	}
+
+}

@@ -1,0 +1,35 @@
+package datp.broker.connector;
+
+import datp.broker.BrokerConnectorProxy;
+import datp.broker.connector.finam.historical.FinamHistoricalServer;
+
+public class FinamHistoricalProxy extends BrokerConnectorProxy {
+	
+	private static BrokerConnectorProxy Instance;
+	public static BrokerConnectorProxy getInstance() {
+		if (Instance == null)
+			Instance = new FinamHistoricalProxy();
+		return Instance;
+	}
+	
+	public final FinamHistoricalServer HistoricalServer;
+	
+	private FinamHistoricalProxy() {
+	}
+	
+	public void connect() {
+	}
+	
+	public void disconnect() {
+	}
+	
+	public void command() {
+	}
+	
+	public void Subscribe() {
+		
+	}
+	
+	public void sendData(Object o) {
+	}
+}

@@ -1,6 +1,7 @@
 package datp.broker.connector;
 
 import datp.network.NetworkDataPath;
+import datp.network.NetworkCommandPath;
 import datp.broker.BrokerConnectorProxy;
 import datp.broker.connector.transaq.TransaqConnector;
 import datp.logging.Logs;
@@ -15,6 +16,7 @@ public class TransaqConnectorProxy extends BrokerConnectorProxy {
 	}
 	
 	public final TransaqConnector Transaq;
+	private NetworkCommandPath CmdPath;
 	private NetworkDataPath AlgoPath;
 	private NetworkDataPath ProxyPath;
 		
@@ -41,11 +43,10 @@ public class TransaqConnectorProxy extends BrokerConnectorProxy {
 		Transaq.deinitialize();
 	}
 	
-	public void command() {
-	}
-	
-	public void Subscribe() {
-		
+	public NetworkCommandPath getCommandBridge() {
+		if (CmdPath == null)
+			CmdPath = new NetworkCommandBridge();
+		return CmdPath;
 	}
 	
 	public void sendData(Object o) {
@@ -76,4 +77,13 @@ public class TransaqConnectorProxy extends BrokerConnectorProxy {
 			break;
 		}
 	}
+	
+	public class NetworkCommandBridge implements NetworkCommandPath {
+
+		public void GetHistory() {
+			
+		}
+		
+	}
+
 }

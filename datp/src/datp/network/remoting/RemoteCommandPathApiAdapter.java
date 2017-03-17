@@ -2,6 +2,7 @@ package datp.network.remoting;
 
 import datp.logging.*;
 import datp.network.NetworkCommandPath;
+import datp.network.NetworkCommandPathAdapter;
 import datp.broker.BrokerConnectorProxy;
 
 import java.net.MalformedURLException;
@@ -9,54 +10,59 @@ import java.rmi.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.*;
 
-@SuppressWarnings("serial")
-public class RemoteCommandPathApiAdapter implements NetworkCommandPath {
+public class RemoteCommandPathApiAdapter implements NetworkCommandPathAdapter {
 	
 	private RemoteCommandConsumer CommandPath;
-	public BrokerConnectorProxy Connector;
+	public NetworkCommandPath CommandBridge;
 	private String Uri;
 	private int Port;
 	
-	public RemoteCommandPathApiAdapter() throws RemoteException {
+	public RemoteCommandPathApiAdapter() {
 	}
 	
-	public void initialize(BrokerConnectorProxy connector, String uri, String port) throws RemoteException, MalformedURLException {
-		Connector = connector;
+	public void initialize(NetworkCommandPath bridge, String uri, String port) {
+		CommandBridge = bridge;
 		initialize(uri, port);
 	}
 	
-	public void initialize(String uri, String port) throws RemoteException, MalformedURLException {
-		Uri = uri;
-		Port = Integer.parseInt(port);
-		LocateRegistry.createRegistry(Port);
-		CommandPath = new RemoteCommandConsumer(this);
-		Naming.rebind(Uri, CommandPath);
+	public void initialize(String uri, String port) {
+		
+		try {
+		
+			Uri = uri;
+			Port = Integer.parseInt(port);
+			LocateRegistry.createRegistry(Port);
+			CommandPath = new RemoteCommandConsumer();
+			Naming.rebind(Uri, CommandPath);
+		
+		} catch (RemoteException | MalformedURLException e) {
+			
+		}
+
 	}
 	
-	public void deinitialize() throws RemoteException, MalformedURLException, NotBoundException {
-		Naming.unbind(Uri);
-		UnicastRemoteObject.unexportObject(CommandPath, true);
-		Logs.message("Remote CM", "deinitialize", "ok");
+	public void deinitialize() {
+		
+		try {
+		
+			Naming.unbind(Uri);
+			UnicastRemoteObject.unexportObject(CommandPath, true);
+			Logs.message("Remote CM", "deinitialize", "ok");
+			
+		} catch (RemoteException | MalformedURLException | NotBoundException e) {
+			
+		}
 	}
-	
-	public void Subscribe() {
-		Connector.Subscribe();
-	}
-	
 	
 	public class RemoteCommandConsumer extends UnicastRemoteObject implements RemoteCommandPathApi {
 		
-		private final RemoteCommandPathApiAdapter parent;
-		
-		public RemoteCommandConsumer(RemoteCommandPathApiAdapter parent) throws RemoteException {
-			this.parent = parent;
+		protected RemoteCommandConsumer() throws RemoteException {
 		}
-	
-		public void CreateDataPath(String path) throws RemoteException {
-			parent.Subscribe();
-			Logs.message("Remoting -> Command API", "createDataPath", path, "ok");
+
+		public void GetHistory() throws RemoteException {
+			CommandBridge.GetHistory();
+			Logs.message("Remoting -> Command API", "GetHistory", "ok");
 		}
-		
 	}
 	
 }
