@@ -19,7 +19,7 @@ public class RemoteServer<T extends Remote> {
 	public RemoteServer() {
 	}
 	
-	public void initialize(String uri, String port, T path) {
+	public void connect(String uri, String port, T path) {
 		
 		try {
 		
@@ -38,7 +38,7 @@ public class RemoteServer<T extends Remote> {
 
 	}
 	
-	public void deinitialize() {
+	public void disconnect() {
 		
 		try {
 		

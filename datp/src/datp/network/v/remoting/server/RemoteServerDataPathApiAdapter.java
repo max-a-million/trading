@@ -26,8 +26,13 @@ public class RemoteServerDataPathApiAdapter extends RemoteServer<RemoteServerDat
 	
 	public void initialize(NetworkDataPath bridge, String uri, String port) {
 		
-		super.initialize(uri, port, DataPath);
+		connect(uri, port, DataPath);
 		DataBridge = bridge;
+	}
+	
+	public void deinitialize() {
+		
+		disconnect();
 	}
 	
 	public class DataConsumer extends UnicastRemoteObject implements RemoteDataPathApi {
@@ -41,4 +46,5 @@ public class RemoteServerDataPathApiAdapter extends RemoteServer<RemoteServerDat
 			Logs.message("Remoting -> Command API", "GetHistory", "ok");
 		}
 	}
+
 }

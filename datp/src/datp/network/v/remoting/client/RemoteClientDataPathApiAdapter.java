@@ -5,7 +5,6 @@ import datp.network.NetworkDataPath;
 import datp.network.client.NetworkDataClientPathAdapter;
 import datp.network.v.remoting.RemoteDataPathApi;
 
-import java.net.MalformedURLException;
 import java.rmi.*;
 
 public class RemoteClientDataPathApiAdapter extends RemoteClient<RemoteDataPathApi> implements NetworkDataClientPathAdapter {
@@ -18,7 +17,7 @@ public class RemoteClientDataPathApiAdapter extends RemoteClient<RemoteDataPathA
 	
 	public void initialize(String uri) {
 		
-		DataPath = super.initialize(uri, "");
+		DataPath = connect(uri, "");
 	}
 	
 	public NetworkDataPath getDataBridge() {
@@ -38,7 +37,7 @@ public class RemoteClientDataPathApiAdapter extends RemoteClient<RemoteDataPathA
 		private boolean checkNullDataPath() {
 			
 			if (DataPath == null) 
-				DataPath = reinitialize();
+				DataPath = reconnect();
 					
 			return DataPath == null;
 		

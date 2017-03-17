@@ -4,7 +4,6 @@ import datp.logging.Logs;
 import datp.network.NetworkCommandPath;
 import datp.network.NetworkDataPath;
 import datp.broker.BrokerConnectorProxy;
-import datp.broker.connector.TransaqConnectorProxy.NetworkCommandBridge;
 import datp.broker.connector.finam.historical.FinamHistoricalServer;
 
 public class FinamHistoricalProxy extends BrokerConnectorProxy {

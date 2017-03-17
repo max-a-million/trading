@@ -1,9 +1,13 @@
 package algo;
 
-public class AnalystCommandPathAdapter extends RemoteCommandPathAdapter {
+import datp.network.v.remoting.client.RemoteClientCommandPathApiAdapter;
 
+public class AnalystCommandPathAdapter extends RemoteClientCommandPathApiAdapter {
+	
 	public AnalystCommandPathAdapter(String uri) {
-		super(uri);
+		
+		super();
+		initialize(uri);
 	}
 
 }

@@ -1,14 +1,22 @@
 package algo;
 
-public class AnalystDataPathAdapter extends RemoteDataPathAdapter {
+import datp.network.NetworkDataPath;
+import datp.network.v.remoting.server.RemoteServerDataPathApiAdapter;
 
+public class AnalystDataPathAdapter extends RemoteServerDataPathApiAdapter {
+	
 	public AnalystDataPathAdapter(String uri, String port) {
-		super(uri, port);
-	}
-
-	@Override
-	public void ServerStatus() {
 		
+		super();
+		DataHandler path = new DataHandler();
+		initialize(path, uri, port);
 	}
 	
+	public class DataHandler implements NetworkDataPath {
+
+		public void ServerStatus() {
+			
+		}
+		
+	}
 }

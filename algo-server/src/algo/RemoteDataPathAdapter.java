@@ -7,7 +7,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 
-import datp.logging.Logs;
 import datp.network.NetworkDataPath;
 import datp.network.v.remoting.RemoteDataPathApi;
 

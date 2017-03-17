@@ -26,8 +26,13 @@ public class RemoteServerCommandPathApiAdapter extends RemoteServer<RemoteServer
 	
 	public void initialize(NetworkCommandPath bridge, String uri, String port) {
 		
-		super.initialize(uri, port, CommandPath);
+		connect(uri, port, CommandPath);
 		CommandBridge = bridge;
+	}
+	
+	public void deinitialize() {
+		
+		disconnect();
 	}
 	
 	public class CommandConsumer extends UnicastRemoteObject implements RemoteCommandPathApi {
@@ -40,5 +45,5 @@ public class RemoteServerCommandPathApiAdapter extends RemoteServer<RemoteServer
 			Logs.message("Remoting -> Command API", "GetHistory", "ok");
 		}
 	}
-	
+
 }

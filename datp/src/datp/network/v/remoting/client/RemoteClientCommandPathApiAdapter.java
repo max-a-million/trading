@@ -17,10 +17,10 @@ public class RemoteClientCommandPathApiAdapter extends RemoteClient<RemoteComman
 	
 	public void initialize(String uri) {
 		
-		CommandPath = super.initialize(uri, "");
+		CommandPath = connect(uri, "");
 	}
 	
-	public NetworkCommandPath getDataBridge() {
+	public NetworkCommandPath getCommandBridge() {
 		
 		if (CommandBridge == null)
 			CommandBridge = new NetworkCommandPathBridge();
@@ -37,7 +37,7 @@ public class RemoteClientCommandPathApiAdapter extends RemoteClient<RemoteComman
 		private boolean checkNullDataPath() {
 			
 			if (CommandPath == null) 
-				CommandPath = reinitialize();
+				CommandPath = reconnect();
 					
 			return CommandPath == null;
 		

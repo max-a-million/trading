@@ -14,7 +14,7 @@ public class RemoteClient<T extends Remote> {
 	private String Uri;
 	private String Port;
 	
-	public T initialize(String uri, String port) {
+	public T connect(String uri, String port) {
 		
 		Uri = uri;
 		Port = port;
@@ -32,12 +32,12 @@ public class RemoteClient<T extends Remote> {
 		return Path;
 	}
 	
-	public T reinitialize() {
+	public T reconnect() {
 		
-		return initialize(Uri, Port);
+		return connect(Uri, Port);
 	}
 	
-	public void deinitialize() {
+	public void disconnect() {
 		
 	}
 }
