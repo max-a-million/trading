@@ -1,0 +1,10 @@
+package datp.network.server;
+
+import datp.network.NetworkCommandPath;
+
+public interface NetworkDataServerPathAdapter {
+	
+	public void initialize(NetworkDataPath bridge, String uri, String port);
+
+	public void deinitialize();
+}
