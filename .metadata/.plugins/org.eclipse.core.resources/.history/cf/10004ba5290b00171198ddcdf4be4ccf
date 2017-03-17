@@ -1,0 +1,38 @@
+package datp.network.remoting;
+
+import datp.logging.*;
+import datp.network.NetworkCommandServerPath;
+import datp.network.NetworkCommandServerPathAdapter;
+
+import java.net.MalformedURLException;
+import java.rmi.*;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.server.*;
+
+public class RemoteServerCommandPathApiAdapter extends RemoteServer<CommandConsumer> implements NetworkCommandServerPathAdapter {
+	
+	private CommandConsumer CommandPath;
+	public NetworkCommandServerPath CommandBridge;
+	private String Uri;
+	private int Port;
+	
+	public RemoteServerCommandPathApiAdapter() {
+	}
+	
+	public void initialize(NetworkCommandServerPath bridge, String uri, String port) {
+		super.initialize(uri, port);
+		CommandBridge = bridge;
+	}
+	
+	public class CommandConsumer extends UnicastRemoteObject implements RemoteCommandPathApi {
+		
+		protected RemoteCommandConsumer() throws RemoteException {
+		}
+
+		public void GetHistory() throws RemoteException {
+			CommandBridge.GetHistory();
+			Logs.message("Remoting -> Command API", "GetHistory", "ok");
+		}
+	}
+	
+}

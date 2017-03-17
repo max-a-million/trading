@@ -2,7 +2,6 @@ INDEX VERSION 1.129+D:\GitHub\trading\.metadata\.plugins\org.eclipse.jdt.core
 2649938732.index
 1814630039.index
 639554494.index
-3720796506.index
 2459259189.index
 3945385849.index
 1584641234.index

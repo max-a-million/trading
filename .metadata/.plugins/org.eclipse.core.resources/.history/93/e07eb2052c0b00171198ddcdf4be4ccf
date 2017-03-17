@@ -1,0 +1,35 @@
+package datp.network.remoting;
+
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
+import datp.logging.Logs;
+
+public class RemoteClient {
+	
+	private String Uri;
+	
+	public Remote initialize(String uri) {
+		
+		Uri = uri;
+		
+		try {
+		
+			DataPath = (RemoteDataPathApi)Naming.lookup(Uri);
+		
+		} catch (NotBoundException | MalformedURLException | RemoteException e) {
+			
+			DataPath = null;
+			Logs.message("Remoting -> Data Path", "initialize", Uri, "error");
+		}
+		
+		return;
+	}
+	
+	public void deinitialize() {
+		
+	}
+}

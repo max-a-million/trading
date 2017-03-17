@@ -1,0 +1,8 @@
+package datp.network;
+
+public interface NetworkCommandServerPathAdapter {
+	
+	public void initialize(NetworkCommandServerPath bridge, String uri, String port);
+
+	public void deinitialize();
+}

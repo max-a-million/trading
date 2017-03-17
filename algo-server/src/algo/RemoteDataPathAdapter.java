@@ -9,7 +9,7 @@ import java.rmi.server.UnicastRemoteObject;
 
 import datp.logging.Logs;
 import datp.network.NetworkDataPath;
-import datp.network.remoting.RemoteDataPathApi;
+import datp.network.v.remoting.RemoteDataPathApi;
 
 public class RemoteDataPathAdapter implements NetworkDataPath {
 	

@@ -1,21 +1,19 @@
 package datp.broker;
 
 import datp.Config;
-import datp.network.*;
-import datp.network.remoting.*;
-
-import java.net.MalformedURLException;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
+import datp.network.client.NetworkDataClientFactory;
+import datp.network.client.NetworkDataClientPathAdapter;
+import datp.network.server.NetworkCommandServerFactory;
+import datp.network.server.NetworkCommandServerPathAdapter;
 
 public class Broker {
 	
 	public static void FinamTC(Stage stage) {
 		
 		BrokerConnectorProxy connector = BrokerConnectorProxyFactory.getConnector("finam-tc");
-		NetworkCommandPathAdapter commander = NetworkCommandFactory.getCommander("Remote", Config.FinamTC.RemoteCommandPath);
-		NetworkDataPathAdapter algoData = NetworkDataFactory.getDataPath("Remote", Config.FinamTC.RemoteAlgoDataPath);
-		NetworkDataPathAdapter proxyData = NetworkDataFactory.getDataPath("Remote", Config.FinamTC.RemoteProxyDataPath);
+		NetworkCommandServerPathAdapter commander = NetworkCommandServerFactory.getCommander("Remote", Config.FinamTC.RemoteCommandPath);
+		NetworkDataClientPathAdapter algoData = NetworkDataClientFactory.getDataPath("Remote", Config.FinamTC.RemoteAlgoDataPath);
+		NetworkDataClientPathAdapter proxyData = NetworkDataClientFactory.getDataPath("Remote", Config.FinamTC.RemoteProxyDataPath);
 			
 		switch (stage) {
 			
@@ -37,9 +35,9 @@ public class Broker {
 	public static void FinamHistorical(Stage stage) {
 		
 		BrokerConnectorProxy connector = BrokerConnectorProxyFactory.getConnector("finam-historical");
-		NetworkCommandPathAdapter commander = NetworkCommandFactory.getCommander("Remote", Config.FinamHistory.RemoteCommandPath);
-		NetworkDataPathAdapter algoData = NetworkDataFactory.getDataPath("Remote", Config.FinamHistory.RemoteAlgoDataPath);
-		NetworkDataPathAdapter proxyData = NetworkDataFactory.getDataPath("Remote", Config.FinamHistory.RemoteProxyDataPath);
+		NetworkCommandServerPathAdapter commander = NetworkCommandServerFactory.getCommander("Remote", Config.FinamHistory.RemoteCommandPath);
+		NetworkDataClientPathAdapter algoData = NetworkDataClientFactory.getDataPath("Remote", Config.FinamHistory.RemoteAlgoDataPath);
+		NetworkDataClientPathAdapter proxyData = NetworkDataClientFactory.getDataPath("Remote", Config.FinamHistory.RemoteProxyDataPath);
 			
 		switch (stage) {
 			

@@ -1,0 +1,50 @@
+package datp.network.remoting;
+
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.server.UnicastRemoteObject;
+
+import datp.logging.Logs;
+
+public class RemoteServer<T extends Remote> {
+	
+	private T Path;
+	private String Uri;
+	private int Port;
+	
+	public RemoteServer() {
+	}
+	
+	public void initialize(String uri, String port, T path) {
+		
+		try {
+		
+			Uri = uri;
+			Port = Integer.parseInt(port);
+			Path = path;
+			LocateRegistry.createRegistry(Port);
+			Naming.rebind(Uri, Path);
+		
+		} catch (RemoteException | MalformedURLException e) {
+			
+		}
+
+	}
+	
+	public void deinitialize() {
+		
+		try {
+		
+			Naming.unbind(Uri);
+			UnicastRemoteObject.unexportObject(CommandPath, true);
+			Logs.message("Remote CM", "deinitialize", "ok");
+			
+		} catch (RemoteException | MalformedURLException | NotBoundException e) {
+			
+		}
+	}
+}
