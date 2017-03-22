@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename type &apos;algo.AnalystDataPath&apos; to &apos;AnalystDataPathAdapter&apos;&#x0D;&#x0A;- Original project: &apos;algo-analyst&apos;&#x0D;&#x0A;- Original element: &apos;algo.AnalystDataPath&apos;&#x0D;&#x0A;- Renamed element: &apos;algo.AnalystDataPathAdapter&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;AnalystDataPath&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;algo{AnalystDataPath.java[AnalystDataPath" matchStrategy="1" name="AnalystDataPathAdapter" qualified="false" references="true" similarDeclarations="false" stamp="1489745130020" textual="false" version="1.0"/>
-</session>
