@@ -7,12 +7,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/init")
-public class Init extends HttpServlet {
+@WebServlet("/x-trader")
+public class XTrader extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    public Init() {
-    	System.out.println("Initialization...");
+    public XTrader() {
+    	super();
+    	System.out.println("x-trader...");
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
