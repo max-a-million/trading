@@ -1,6 +1,0 @@
-package algo;
-
-import datp.network.v.remoting.client.RemoteClientCommandPathApiAdapter;
-
-public class AnalystCommandPathAdapter extends RemoteClientCommandPathApiAdapter {
-}

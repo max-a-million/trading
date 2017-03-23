@@ -1,7 +1,0 @@
-package algo;
-
-import datp.network.v.remoting.server.RemoteServerDataPathApiAdapter;
-
-public class AnalystDataPathAdapter extends RemoteServerDataPathApiAdapter {
-	
-}

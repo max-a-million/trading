@@ -1,5 +1,0 @@
-package algo.analyst;
-
-public class AnalystBrain extends Thread {
-
-}
