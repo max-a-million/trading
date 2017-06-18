@@ -4,20 +4,28 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>xTrader</title>
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
+    	<script src="js/bootstrap.min.js"></script>
 	</head>
 
 	<body>
-		<h1>xTrader</h1>
-		<div>
-			
-			<h3>Algorithms</h3>
-			<div>
-			</div>
-		
-			<h3>Data analysis</h3>
-			
-			
-		</div>
+		<ul>
+			<li><a href="stage0.html">Календарный спред</a></li>
+		</ul>
 	</body>
+	
+	<script>
+		function Stage0Process() {
+			var req = new XMLHttpRequest();
+			req.onreadystatechange = function() {
+				if (req.readyState != 4) 
+					return;
+				document.write(req.responseText);
+			}
+			req.open('GET', 'stage0', true);
+		    req.send();
+	    }
+	</script>
 
 </html>
